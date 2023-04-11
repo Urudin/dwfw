@@ -178,7 +178,9 @@ class Files extends Controller
         $storage_dir = $storage_dir ?? $partner_id;
 
         $file = File::query()->findOrNew($file_id);
-        Storage::delete($file->file_path);
+        if($file->file_path){
+            Storage::delete($file->file_path);
+        }
 
         if ($storage_dir !== null) {
             $storage_dir .= '/';
@@ -195,7 +197,7 @@ class Files extends Controller
             $storage_dir = "";
         }
 
-        $storage = Storage::putFile($storage_dir, $uploaded_file, 'public');
+        Storage::putFile($storage_dir, $uploaded_file, 'public');
         return $file;
     }
 
